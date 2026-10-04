@@ -1,0 +1,39 @@
+[project]
+name = "sltmodel"
+version = "0.1.0"
+description = "GUI-independent data models and operations for StructLayoutToolkit"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "sltcalc>=1.1.0",
+    "sltcodec>=2.6.1",
+    "sltcore>=1.7.0",
+]
+
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "fangface" }
+]
+keywords = ["struct", "byte", "layout", "serialization", "deserialization"]
+
+[project.urls]
+Homepage = "https://github.com/fangface-hub/StructLayoutToolkitGui"
+Repository = "https://github.com/fangface-hub/StructLayoutToolkitGui"
+Issues = "https://github.com/fangface-hub/StructLayoutToolkitGui/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sltmodel"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

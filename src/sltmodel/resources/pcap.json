@@ -1,0 +1,604 @@
+{
+  "struct_def_name": "pcap_file",
+  "type_dict": {
+    "struct_dict": {
+      "pacp_file_header": {
+        "name": "pacp_file_header",
+        "description": "The File Header",
+        "fields": [
+          {
+            "name": "magic_number",
+            "offset": {
+              "__type__": "InfoSize",
+              "byte": 0,
+              "bit": 0
+            },
+            "size": {
+              "__type__": "InfoSize",
+              "byte": 4,
+              "bit": 0
+            },
+            "type": "unsigned int",
+            "scale": 1.0,
+            "repeat": null,
+            "description": null,
+            "range_expression": null,
+            "enum_def_name": null,
+            "byte_swap": false
+          },
+          {
+            "name": "major_version",
+            "offset": {
+              "__type__": "InfoSize",
+              "byte": 4,
+              "bit": 0
+            },
+            "size": {
+              "__type__": "InfoSize",
+              "byte": 2,
+              "bit": 0
+            },
+            "type": "unsigned int",
+            "scale": 1.0,
+            "repeat": null,
+            "description": null,
+            "range_expression": null,
+            "enum_def_name": null,
+            "byte_swap": "magic_number==0xD4C3B2A1"
+          },
+          {
+            "name": "minor_version",
+            "offset": {
+              "__type__": "InfoSize",
+              "byte": 6,
+              "bit": 0
+            },
+            "size": {
+              "__type__": "InfoSize",
+              "byte": 2,
+              "bit": 0
+            },
+            "type": "unsigned int",
+            "scale": 1.0,
+            "repeat": null,
+            "description": null,
+            "range_expression": null,
+            "enum_def_name": null,
+            "byte_swap": "magic_number==0xD4C3B2A1"
+          },
+          {
+            "name": "thiszone",
+            "offset": {
+              "__type__": "InfoSize",
+              "byte": 8,
+              "bit": 0
+            },
+            "size": {
+              "__type__": "InfoSize",
+              "byte": 4,
+              "bit": 0
+            },
+            "type": "unsigned int",
+            "scale": 1.0,
+            "repeat": null,
+            "description": null,
+            "range_expression": null,
+            "enum_def_name": null,
+            "byte_swap": "magic_number==0xD4C3B2A1"
+          },
+          {
+            "name": "sigfigs",
+            "offset": {
+              "__type__": "InfoSize",
+              "byte": 12,
+              "bit": 0
+            },
+            "size": {
+              "__type__": "InfoSize",
+              "byte": 4,
+              "bit": 0
+            },
+            "type": "unsigned int",
+            "scale": 1.0,
+            "repeat": null,
+            "description": null,
+            "range_expression": null,
+            "enum_def_name": null,
+            "byte_swap": "magic_number==0xD4C3B2A1"
+          },
+          {
+            "name": "snap_len",
+            "offset": {
+              "__type__": "InfoSize",
+              "byte": 16,
+              "bit": 0
+            },
+            "size": {
+              "__type__": "InfoSize",
+              "byte": 4,
+              "bit": 0
+            },
+            "type": "unsigned int",
+            "scale": 1.0,
+            "repeat": null,
+            "description": null,
+            "range_expression": null,
+            "enum_def_name": null,
+            "byte_swap": false
+          },
+          {
+            "name": "fcs_len",
+            "offset": {
+              "__type__": "InfoSize",
+              "byte": 20,
+              "bit": 0
+            },
+            "size": {
+              "__type__": "InfoSize",
+              "byte": 0,
+              "bit": 4
+            },
+            "type": "unsigned int",
+            "scale": 1.0,
+            "repeat": null,
+            "description": null,
+            "range_expression": null,
+            "enum_def_name": null,
+            "byte_swap": false
+          },
+          {
+            "name": "r",
+            "offset": {
+              "__type__": "InfoSize",
+              "byte": 20,
+              "bit": 4
+            },
+            "size": {
+              "__type__": "InfoSize",
+              "byte": 0,
+              "bit": 1
+            },
+            "type": "unsigned int",
+            "scale": 1.0,
+            "repeat": null,
+            "description": null,
+            "range_expression": null,
+            "enum_def_name": null,
+            "byte_swap": false
+          },
+          {
+            "name": "p",
+            "offset": {
+              "__type__": "InfoSize",
+              "byte": 20,
+              "bit": 5
+            },
+            "size": {
+              "__type__": "InfoSize",
+              "byte": 0,
+              "bit": 1
+            },
+            "type": "unsigned int",
+            "scale": 1.0,
+            "repeat": null,
+            "description": null,
+            "range_expression": null,
+            "enum_def_name": null,
+            "byte_swap": false
+          },
+          {
+            "name": "reserved3",
+            "offset": {
+              "__type__": "InfoSize",
+              "byte": 20,
+              "bit": 6
+            },
+            "size": {
+              "__type__": "InfoSize",
+              "byte": 1,
+              "bit": 2
+            },
+            "type": "unsigned int",
+            "scale": 1.0,
+            "repeat": null,
+            "description": null,
+            "range_expression": null,
+            "enum_def_name": null,
+            "byte_swap": false
+          },
+          {
+            "name": "link_type",
+            "offset": {
+              "__type__": "InfoSize",
+              "byte": 20,
+              "bit": 0
+            },
+            "size": {
+              "__type__": "InfoSize",
+              "byte": 4,
+              "bit": 0
+            },
+            "type": "unsigned int",
+            "scale": 1.0,
+            "repeat": null,
+            "description": null,
+            "range_expression": null,
+            "enum_def_name": "LinkType",
+            "byte_swap": "magic_number in [0xD4C3B2A1, 0x4D3CB2A1]"
+          }
+        ]
+      },
+      "pcap_timestamp": {
+        "name": "pcap_timestamp",
+        "description": "PCAP timestamp split into seconds and fractional seconds",
+        "fields": [
+          {
+            "name": "timestamp_seconds",
+            "offset": {
+              "__type__": "InfoSize",
+              "byte": 0,
+              "bit": 0
+            },
+            "size": {
+              "__type__": "InfoSize",
+              "byte": 4,
+              "bit": 0
+            },
+            "type": "unsigned int",
+            "scale": 1.0,
+            "repeat": null,
+            "description": null,
+            "range_expression": null,
+            "enum_def_name": null,
+            "byte_swap": "magic_number==0xD4C3B2A1"
+          },
+          {
+            "name": "timestamp_nanoseconds",
+            "offset": {
+              "__type__": "InfoSize",
+              "byte": 4,
+              "bit": 0
+            },
+            "size": {
+              "__type__": "InfoSize",
+              "byte": 4,
+              "bit": 0
+            },
+            "type": "unsigned int",
+            "scale": 1.0,
+            "repeat": null,
+            "description": null,
+            "range_expression": null,
+            "enum_def_name": null,
+            "byte_swap": "magic_number==0xD4C3B2A1"
+          }
+        ]
+      },
+      "packet_record": {
+        "name": "packet_record",
+        "description": "",
+        "fields": [
+          {
+            "name": "pcap_timestamp",
+            "offset": {
+              "__type__": "InfoSize",
+              "byte": 0,
+              "bit": 0
+            },
+            "size": {
+              "__type__": "InfoSize",
+              "byte": 8,
+              "bit": 0
+            },
+            "type": "pcap_timestamp",
+            "scale": 1.0,
+            "repeat": null,
+            "description": null,
+            "range_expression": null,
+            "enum_def_name": null,
+            "byte_swap": false
+          },
+          {
+            "name": "captured_packet_length",
+            "offset": {
+              "__type__": "InfoSize",
+              "byte": 8,
+              "bit": 0
+            },
+            "size": {
+              "__type__": "InfoSize",
+              "byte": 4,
+              "bit": 0
+            },
+            "type": "unsigned int",
+            "scale": 1.0,
+            "repeat": null,
+            "description": null,
+            "range_expression": null,
+            "enum_def_name": null,
+            "byte_swap": "magic_number==0xD4C3B2A1"
+          },
+          {
+            "name": "original_packet_length",
+            "offset": {
+              "__type__": "InfoSize",
+              "byte": 12,
+              "bit": 0
+            },
+            "size": {
+              "__type__": "InfoSize",
+              "byte": 4,
+              "bit": 0
+            },
+            "type": "unsigned int",
+            "scale": 1.0,
+            "repeat": null,
+            "description": null,
+            "range_expression": null,
+            "enum_def_name": null,
+            "byte_swap": "magic_number==0xD4C3B2A1"
+          },
+          {
+            "name": "packet_data",
+            "offset": {
+              "__type__": "InfoSize",
+              "byte": 16,
+              "bit": 0
+            },
+            "size": "InfoSize(1,0) * captured_packet_length",
+            "type": "'ethernet_frame' if (link_type & 0xFFFF) == 1 else 'bytearray'",
+            "scale": 1.0,
+            "repeat": null,
+            "description": null,
+            "range_expression": null,
+            "enum_def_name": null,
+            "byte_swap": false
+          }
+        ]
+      },
+      "ethernet_frame": {
+        "name": "ethernet_frame",
+        "description": "Ethernet II frame",
+        "fields": [
+          {"name": "destination_mac", "offset": {"__type__": "InfoSize", "byte": 0, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 6, "bit": 0}, "type": "bytearray"},
+          {"name": "source_mac", "offset": {"__type__": "InfoSize", "byte": 6, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 6, "bit": 0}, "type": "bytearray"},
+          {"name": "ether_type", "offset": {"__type__": "InfoSize", "byte": 12, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int", "enum_def_name": "EtherType"},
+          {"name": "network_packet", "offset": {"__type__": "InfoSize", "byte": 14, "bit": 0}, "size": "InfoSize(1,0) * (captured_packet_length - 14)", "type": "'ipv4_packet' if ether_type == 0x0800 else 'arp_packet' if ether_type == 0x0806 else 'ipv6_packet' if ether_type == 0x86DD else 'vlan_frame' if ether_type in [0x8100, 0x88A8] else 'bytearray'"}
+        ]
+      },
+      "vlan_frame": {
+        "name": "vlan_frame",
+        "description": "IEEE 802.1Q VLAN payload",
+        "fields": [
+          {"name": "tag_control_information", "offset": {"__type__": "InfoSize", "byte": 0, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int"},
+          {"name": "ether_type", "offset": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int", "enum_def_name": "EtherType"},
+          {"name": "network_packet", "offset": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "size": "InfoSize(1,0) * (captured_packet_length - 18)", "type": "'ipv4_packet' if ether_type == 0x0800 else 'arp_packet' if ether_type == 0x0806 else 'ipv6_packet' if ether_type == 0x86DD else 'bytearray'"}
+        ]
+      },
+      "arp_packet": {
+        "name": "arp_packet",
+        "description": "Address Resolution Protocol packet",
+        "fields": [
+          {"name": "hardware_type", "offset": {"__type__": "InfoSize", "byte": 0, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int"},
+          {"name": "protocol_type", "offset": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int"},
+          {"name": "hardware_address_length", "offset": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 1, "bit": 0}, "type": "unsigned int"},
+          {"name": "protocol_address_length", "offset": {"__type__": "InfoSize", "byte": 5, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 1, "bit": 0}, "type": "unsigned int"},
+          {"name": "operation", "offset": {"__type__": "InfoSize", "byte": 6, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int", "enum_def_name": "ArpOperation"},
+          {"name": "sender_hardware_address", "offset": {"__type__": "InfoSize", "byte": 8, "bit": 0}, "size": "InfoSize(1,0) * hardware_address_length", "type": "bytearray"},
+          {"name": "sender_protocol_address", "offset": "InfoSize(8,0) + InfoSize(1,0) * hardware_address_length", "size": "InfoSize(1,0) * protocol_address_length", "type": "bytearray"},
+          {"name": "target_hardware_address", "offset": "InfoSize(8,0) + InfoSize(1,0) * (hardware_address_length + protocol_address_length)", "size": "InfoSize(1,0) * hardware_address_length", "type": "bytearray"},
+          {"name": "target_protocol_address", "offset": "InfoSize(8,0) + InfoSize(1,0) * (hardware_address_length * 2 + protocol_address_length)", "size": "InfoSize(1,0) * protocol_address_length", "type": "bytearray"}
+        ]
+      },
+      "ipv4_packet": {
+        "name": "ipv4_packet",
+        "description": "Internet Protocol version 4 packet",
+        "fields": [
+          {"name": "version_ihl", "offset": {"__type__": "InfoSize", "byte": 0, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 1, "bit": 0}, "type": "unsigned int"},
+          {"name": "dscp_ecn", "offset": {"__type__": "InfoSize", "byte": 1, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 1, "bit": 0}, "type": "unsigned int"},
+          {"name": "total_length", "offset": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int"},
+          {"name": "identification", "offset": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int"},
+          {"name": "reserved_flag", "offset": {"__type__": "InfoSize", "byte": 6, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 0, "bit": 1}, "type": "unsigned int"},
+          {"name": "dont_fragment", "offset": {"__type__": "InfoSize", "byte": 6, "bit": 1}, "size": {"__type__": "InfoSize", "byte": 0, "bit": 1}, "type": "unsigned int"},
+          {"name": "more_fragments", "offset": {"__type__": "InfoSize", "byte": 6, "bit": 2}, "size": {"__type__": "InfoSize", "byte": 0, "bit": 1}, "type": "unsigned int"},
+          {"name": "fragment_offset", "offset": {"__type__": "InfoSize", "byte": 6, "bit": 3}, "size": {"__type__": "InfoSize", "byte": 1, "bit": 5}, "type": "unsigned int"},
+          {"name": "time_to_live", "offset": {"__type__": "InfoSize", "byte": 8, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 1, "bit": 0}, "type": "unsigned int"},
+          {"name": "protocol", "offset": {"__type__": "InfoSize", "byte": 9, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 1, "bit": 0}, "type": "unsigned int", "enum_def_name": "IpProtocol"},
+          {"name": "header_checksum", "offset": {"__type__": "InfoSize", "byte": 10, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int"},
+          {"name": "source_address", "offset": {"__type__": "InfoSize", "byte": 12, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "bytearray"},
+          {"name": "destination_address", "offset": {"__type__": "InfoSize", "byte": 16, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "bytearray"},
+          {"name": "options", "offset": {"__type__": "InfoSize", "byte": 20, "bit": 0}, "size": "InfoSize(4,0) * ((version_ihl & 0x0F) - 5)", "type": "bytearray"},
+          {"name": "transport_segment", "offset": "InfoSize(4,0) * (version_ihl & 0x0F)", "size": "InfoSize(1,0) * (total_length - (version_ihl & 0x0F) * 4)", "type": "'tcp_segment_ipv4' if protocol == 6 and fragment_offset == 0 and more_fragments == 0 else 'udp_datagram' if protocol == 17 and fragment_offset == 0 and more_fragments == 0 else 'icmp_message_ipv4' if protocol == 1 and fragment_offset == 0 and more_fragments == 0 else 'bytearray'"}
+        ]
+      },
+      "ipv6_packet": {
+        "name": "ipv6_packet",
+        "description": "Internet Protocol version 6 packet",
+        "fields": [
+          {"name": "version_traffic_flow", "offset": {"__type__": "InfoSize", "byte": 0, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int"},
+          {"name": "payload_length", "offset": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int"},
+          {"name": "next_header", "offset": {"__type__": "InfoSize", "byte": 6, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 1, "bit": 0}, "type": "unsigned int", "enum_def_name": "IpProtocol"},
+          {"name": "hop_limit", "offset": {"__type__": "InfoSize", "byte": 7, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 1, "bit": 0}, "type": "unsigned int"},
+          {"name": "source_address", "offset": {"__type__": "InfoSize", "byte": 8, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 16, "bit": 0}, "type": "bytearray"},
+          {"name": "destination_address", "offset": {"__type__": "InfoSize", "byte": 24, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 16, "bit": 0}, "type": "bytearray"},
+          {"name": "transport_segment", "offset": {"__type__": "InfoSize", "byte": 40, "bit": 0}, "size": "InfoSize(1,0) * payload_length", "type": "'ipv6_fragment_header' if next_header == 44 else 'tcp_segment_ipv6' if next_header == 6 else 'udp_datagram' if next_header == 17 else 'icmp_message_ipv6' if next_header == 58 else 'bytearray'"}
+        ]
+      },
+      "ipv6_fragment_header": {
+        "name": "ipv6_fragment_header",
+        "description": "Internet Protocol version 6 Fragment Header",
+        "fields": [
+          {"name": "next_header", "offset": {"__type__": "InfoSize", "byte": 0, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 1, "bit": 0}, "type": "unsigned int", "enum_def_name": "IpProtocol"},
+          {"name": "reserved", "offset": {"__type__": "InfoSize", "byte": 1, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 1, "bit": 0}, "type": "unsigned int"},
+          {"name": "fragment_offset", "offset": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 1, "bit": 5}, "type": "unsigned int"},
+          {"name": "reserved", "offset": {"__type__": "InfoSize", "byte": 3, "bit": 5}, "size": {"__type__": "InfoSize", "byte": 0, "bit": 2}, "type": "unsigned int"},
+          {"name": "more_fragments", "offset": {"__type__": "InfoSize", "byte": 3, "bit": 7}, "size": {"__type__": "InfoSize", "byte": 0, "bit": 1}, "type": "unsigned int"},
+          {"name": "identification", "offset": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int"},
+          {"name": "fragment_payload", "offset": {"__type__": "InfoSize", "byte": 8, "bit": 0}, "size": "InfoSize(1,0) * (payload_length - 8)", "type": "bytearray"}
+        ]
+      },
+      "udp_datagram": {
+        "name": "udp_datagram",
+        "description": "User Datagram Protocol datagram",
+        "fields": [
+          {"name": "source_port", "offset": {"__type__": "InfoSize", "byte": 0, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int"},
+          {"name": "destination_port", "offset": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int"},
+          {"name": "length", "offset": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int"},
+          {"name": "checksum", "offset": {"__type__": "InfoSize", "byte": 6, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int"},
+          {"name": "application_data", "offset": {"__type__": "InfoSize", "byte": 8, "bit": 0}, "size": "InfoSize(1,0) * (length - 8)", "type": "bytearray"}
+        ]
+      },
+      "tcp_segment_ipv4": {
+        "name": "tcp_segment_ipv4",
+        "description": "Transmission Control Protocol segment carried by IPv4",
+        "fields": [
+          {"name": "source_port", "offset": {"__type__": "InfoSize", "byte": 0, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int"},
+          {"name": "destination_port", "offset": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int"},
+          {"name": "sequence_number", "offset": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int"},
+          {"name": "acknowledgment_number", "offset": {"__type__": "InfoSize", "byte": 8, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int"},
+          {"name": "data_offset_flags", "offset": {"__type__": "InfoSize", "byte": 12, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int"},
+          {"name": "window_size", "offset": {"__type__": "InfoSize", "byte": 14, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int"},
+          {"name": "checksum", "offset": {"__type__": "InfoSize", "byte": 16, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int"},
+          {"name": "urgent_pointer", "offset": {"__type__": "InfoSize", "byte": 18, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int"},
+          {"name": "options", "offset": {"__type__": "InfoSize", "byte": 20, "bit": 0}, "size": "InfoSize(4,0) * ((data_offset_flags >> 12) - 5)", "type": "bytearray"},
+          {"name": "application_data", "offset": "InfoSize(4,0) * (data_offset_flags >> 12)", "size": "InfoSize(1,0) * (total_length - (version_ihl & 0x0F) * 4 - (data_offset_flags >> 12) * 4)", "type": "bytearray"}
+        ]
+      },
+      "tcp_segment_ipv6": {
+        "name": "tcp_segment_ipv6",
+        "description": "Transmission Control Protocol segment carried by IPv6",
+        "fields": [
+          {"name": "source_port", "offset": {"__type__": "InfoSize", "byte": 0, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int"},
+          {"name": "destination_port", "offset": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int"},
+          {"name": "sequence_number", "offset": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int"},
+          {"name": "acknowledgment_number", "offset": {"__type__": "InfoSize", "byte": 8, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int"},
+          {"name": "data_offset_flags", "offset": {"__type__": "InfoSize", "byte": 12, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int"},
+          {"name": "window_size", "offset": {"__type__": "InfoSize", "byte": 14, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int"},
+          {"name": "checksum", "offset": {"__type__": "InfoSize", "byte": 16, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int"},
+          {"name": "urgent_pointer", "offset": {"__type__": "InfoSize", "byte": 18, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int"},
+          {"name": "options", "offset": {"__type__": "InfoSize", "byte": 20, "bit": 0}, "size": "InfoSize(4,0) * ((data_offset_flags >> 12) - 5)", "type": "bytearray"},
+          {"name": "application_data", "offset": "InfoSize(4,0) * (data_offset_flags >> 12)", "size": "InfoSize(1,0) * (payload_length - (data_offset_flags >> 12) * 4)", "type": "bytearray"}
+        ]
+      },
+      "icmp_message_ipv4": {
+        "name": "icmp_message_ipv4",
+        "description": "Internet Control Message Protocol message",
+        "fields": [
+          {"name": "type", "offset": {"__type__": "InfoSize", "byte": 0, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 1, "bit": 0}, "type": "unsigned int"},
+          {"name": "code", "offset": {"__type__": "InfoSize", "byte": 1, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 1, "bit": 0}, "type": "unsigned int"},
+          {"name": "checksum", "offset": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int"},
+          {"name": "message_data", "offset": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "size": "InfoSize(1,0) * (total_length - (version_ihl & 0x0F) * 4 - 4)", "type": "bytearray"}
+        ]
+      },
+      "icmp_message_ipv6": {
+        "name": "icmp_message_ipv6",
+        "description": "Internet Control Message Protocol version 6 message",
+        "fields": [
+          {"name": "type", "offset": {"__type__": "InfoSize", "byte": 0, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 1, "bit": 0}, "type": "unsigned int"},
+          {"name": "code", "offset": {"__type__": "InfoSize", "byte": 1, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 1, "bit": 0}, "type": "unsigned int"},
+          {"name": "checksum", "offset": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int"},
+          {"name": "message_data", "offset": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "size": "InfoSize(1,0) * (payload_length - 4)", "type": "bytearray"}
+        ]
+      },
+      "pcap_file": {
+        "name": "pcap_file",
+        "description": "",
+        "fields": [
+          {
+            "name": "header",
+            "offset": {
+              "__type__": "InfoSize",
+              "byte": 0,
+              "bit": 0
+            },
+            "size": {
+              "__type__": "InfoSize",
+              "byte": 24,
+              "bit": 0
+            },
+            "type": "pacp_file_header",
+            "scale": 1.0,
+            "repeat": null,
+            "description": null,
+            "range_expression": null,
+            "enum_def_name": null,
+            "byte_swap": false
+          },
+          {
+            "name": "record",
+            "offset": {
+              "__type__": "InfoSize",
+              "byte": 24,
+              "bit": 0
+            },
+            "size": {
+              "__type__": "InfoSize",
+              "byte": 16,
+              "bit": 0
+            },
+            "type": "packet_record",
+            "scale": 1.0,
+            "repeat": "end",
+            "description": null,
+            "range_expression": null,
+            "enum_def_name": null,
+            "byte_swap": false
+          }
+        ]
+      }
+    },
+    "enum_dict": {
+      "LinkType": {
+        "name": "LinkType",
+        "description": "PCAP link-layer header type",
+        "values": {
+          "NULL": 0,
+          "ETHERNET": 1,
+          "RAW_IP": 101,
+          "IEEE802_11": 105,
+          "LINUX_SLL": 113
+        }
+      },
+      "EtherType": {
+        "name": "EtherType",
+        "description": "Ethernet protocol identifier",
+        "values": {
+          "IPV4": 2048,
+          "ARP": 2054,
+          "VLAN": 33024,
+          "IPV6": 34525,
+          "QINQ": 34984
+        }
+      },
+      "IpProtocol": {
+        "name": "IpProtocol",
+        "description": "IPv4 protocol and IPv6 next-header number",
+        "values": {
+          "HOPOPT": 0,
+          "ICMP": 1,
+          "IGMP": 2,
+          "TCP": 6,
+          "UDP": 17,
+          "IPV6": 41,
+          "IPV6_ROUTE": 43,
+          "IPV6_FRAGMENT": 44,
+          "ESP": 50,
+          "AH": 51,
+          "ICMPV6": 58,
+          "IPV6_NO_NEXT_HEADER": 59,
+          "IPV6_OPTIONS": 60
+        }
+      },
+      "ArpOperation": {
+        "name": "ArpOperation",
+        "description": "ARP operation code",
+        "values": {
+          "REQUEST": 1,
+          "REPLY": 2,
+          "RARP_REQUEST": 3,
+          "RARP_REPLY": 4
+        }
+      }
+    }
+  }
+}
