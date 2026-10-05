@@ -33,3 +33,14 @@ uv sync
 uv run pytest -q
 uv build
 ```
+
+To bump the package version, run one of these scripts from the repository root.
+Each script resolves `pyproject.toml` and `uv.lock` relative to its own location.
+
+```powershell
+.\bump_major.ps1
+.\bump_minor.ps1
+.\bump_patch.ps1
+```
+
+The scripts update the `sltmodel` version in both `pyproject.toml` and `uv.lock`.
