@@ -1,6 +1,6 @@
 [project]
 name = "sltmodel"
-version = "1.0.2"
+version = "1.0.3"
 description = "GUI-independent data models and operations for StructLayoutToolkit"
 readme = "README.md"
 requires-python = ">=3.14"

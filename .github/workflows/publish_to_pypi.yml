@@ -16,7 +16,11 @@ jobs:
       - name: Extract version from pyproject.toml
         id: version
         run: |
-          VERSION=$(grep -m1 '^version = "' pyproject.toml | sed -E 's/^version = "([^"]+)"$/\1/')
+          VERSION=$(tr -d '\r' < pyproject.toml | grep -m1 '^version = "' | sed -E 's/^version = "([^"]+)".*/\1/')
+          if [ -z "$VERSION" ] || [[ "$VERSION" == *" "* ]]; then
+            echo "Failed to parse version: '$VERSION'" >&2
+            exit 1
+          fi
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
 
