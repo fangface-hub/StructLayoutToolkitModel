@@ -1,13 +1,13 @@
 [project]
 name = "sltmodel"
-version = "1.0.3"
+version = "1.0.4"
 description = "GUI-independent data models and operations for StructLayoutToolkit"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
-    "sltcalc>=1.1.0",
-    "sltcodec>=2.7.2",
-    "sltcore>=1.7.0",
+    "sltcalc>=1.1.1",
+    "sltcodec>=2.7.3",
+    "sltcore>=1.7.1",
 ]
 
 license = "MIT"
