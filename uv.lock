@@ -192,11 +192,11 @@ wheels = [
 
 [[package]]
 name = "sltcalc"
-version = "1.1.1"
+version = "1.1.2"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/7c/49/aa03926ebc69cf17ea22b9545328d95221b8f2499c38ebf24e58e1d4bbaa/sltcalc-1.1.1.tar.gz", hash = "sha256:3af9a82bb3611e028c03e16fe715ba037036cd32bde5deb8d10afd2b99e342d0", size = 10637, upload-time = "2026-10-09T14:58:58.023Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a1/e9/6b7334735b78aa8c4242c912aadd428fd7d28be969e4217fecd3df4b0890/sltcalc-1.1.2.tar.gz", hash = "sha256:c5b6bb291d1a80205c6569304c2832279fecfd73de1efccc26777d8a83954916", size = 10881, upload-time = "2026-10-09T16:37:09.703Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/55/22/ccf1208800436d19173653902eef09106a068bd51c1f5314ebaddba2c7b3/sltcalc-1.1.1-py3-none-any.whl", hash = "sha256:95090613c7172a6889243a158073efbf8d3ce25a9bf453f8411dad09897df394", size = 4923, upload-time = "2026-10-09T14:58:57.24Z" },
+    { url = "https://files.pythonhosted.org/packages/28/10/fab275ba243f26a0b41032c4667a4a13fc1753922c1c69b12d5179e48a1e/sltcalc-1.1.2-py3-none-any.whl", hash = "sha256:fa4dae55ceb48d7481a505d512035d5cfdfc5316f592617367e32e75073c464f", size = 5056, upload-time = "2026-10-09T16:37:08.627Z" },
 ]
 
 [[package]]
@@ -223,7 +223,7 @@ wheels = [
 
 [[package]]
 name = "sltmodel"
-version = "1.1.0"
+version = "1.1.1"
 source = { editable = "." }
 dependencies = [
     { name = "lupa" },
@@ -241,7 +241,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "lupa", specifier = ">=2.8" },
-    { name = "sltcalc", specifier = ">=1.1.1" },
+    { name = "sltcalc", specifier = ">=1.1.2" },
     { name = "sltcodec", specifier = ">=2.7.3" },
     { name = "sltcore", specifier = ">=1.7.1" },
 ]
