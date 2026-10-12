@@ -1,0 +1,100 @@
+{
+  "struct_def_name": "elf_file",
+  "type_dict": {
+    "struct_dict": {
+      "elf_file": {
+        "name": "elf_file",
+        "description": "Executable and Linkable Format image",
+        "fields": [
+          {"name": "e_ident", "offset": {"__type__": "InfoSize", "byte": 0, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 16, "bit": 0}, "type": "bytearray"},
+          {"name": "elf_class", "offset": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 1, "bit": 0}, "type": "unsigned int", "enum_def_name": "Class"},
+          {"name": "elf_data", "offset": {"__type__": "InfoSize", "byte": 5, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 1, "bit": 0}, "type": "unsigned int", "enum_def_name": "DataEncoding"},
+          {"name": "e_type", "offset": {"__type__": "InfoSize", "byte": 16, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int", "enum_def_name": "Type", "byte_swap": "elf_data == 1"},
+          {"name": "e_machine", "offset": {"__type__": "InfoSize", "byte": 18, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int", "enum_def_name": "Machine", "byte_swap": "elf_data == 1"},
+            {"name": "e_version", "offset": {"__type__": "InfoSize", "byte": 20, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int", "byte_swap": "elf_data == 1"},
+          {"name": "e_entry", "offset": {"__type__": "InfoSize", "byte": 24, "bit": 0}, "size": "InfoSize(8 if elf_class == 2 else 4, 0)", "type": "unsigned int", "byte_swap": "elf_data == 1"},
+          {"name": "e_phoff", "offset": "InfoSize(32 if elf_class == 2 else 28, 0)", "size": "InfoSize(8 if elf_class == 2 else 4, 0)", "type": "unsigned int", "byte_swap": "elf_data == 1"},
+          {"name": "e_shoff", "offset": "InfoSize(40 if elf_class == 2 else 32, 0)", "size": "InfoSize(8 if elf_class == 2 else 4, 0)", "type": "unsigned int", "byte_swap": "elf_data == 1"},
+          {"name": "e_flags", "offset": "InfoSize(48 if elf_class == 2 else 36, 0)", "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int", "byte_swap": "elf_data == 1"},
+          {"name": "e_ehsize", "offset": "InfoSize(52 if elf_class == 2 else 40, 0)", "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int", "byte_swap": "elf_data == 1"},
+          {"name": "e_phentsize", "offset": "InfoSize(54 if elf_class == 2 else 42, 0)", "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int", "byte_swap": "elf_data == 1"},
+          {"name": "e_phnum", "offset": "InfoSize(56 if elf_class == 2 else 44, 0)", "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int", "byte_swap": "elf_data == 1"},
+          {"name": "e_shentsize", "offset": "InfoSize(58 if elf_class == 2 else 46, 0)", "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int", "byte_swap": "elf_data == 1"},
+          {"name": "e_shnum", "offset": "InfoSize(60 if elf_class == 2 else 48, 0)", "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int", "byte_swap": "elf_data == 1"},
+          {"name": "e_shstrndx", "offset": "InfoSize(62 if elf_class == 2 else 50, 0)", "size": {"__type__": "InfoSize", "byte": 2, "bit": 0}, "type": "unsigned int", "byte_swap": "elf_data == 1"},
+          {"name": "program_headers", "offset": "InfoSize(e_phoff, 0)", "size": "InfoSize(e_phentsize, 0)", "type": "'elf_program_header_64' if elf_class == 2 else 'elf_program_header_32'", "repeat": "min(e_phnum, 4096)"}
+        ]
+      },
+      "elf_program_header_32": {
+        "name": "elf_program_header_32",
+        "description": "ELF32 program header",
+        "fields": [
+          {"name": "p_type", "offset": {"__type__": "InfoSize", "byte": 0, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int", "enum_def_name": "ProgramType", "byte_swap": true},
+          {"name": "p_offset", "offset": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int", "byte_swap": true},
+          {"name": "p_vaddr", "offset": {"__type__": "InfoSize", "byte": 8, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int", "byte_swap": true},
+          {"name": "p_paddr", "offset": {"__type__": "InfoSize", "byte": 12, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int", "byte_swap": true},
+          {"name": "p_filesz", "offset": {"__type__": "InfoSize", "byte": 16, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int", "byte_swap": true},
+          {"name": "p_memsz", "offset": {"__type__": "InfoSize", "byte": 20, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int", "byte_swap": true},
+          {"name": "p_flags", "offset": {"__type__": "InfoSize", "byte": 24, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int", "enum_def_name": "ProgramFlags", "byte_swap": true},
+          {"name": "p_align", "offset": {"__type__": "InfoSize", "byte": 28, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int", "byte_swap": true}
+        ]
+      },
+      "elf_program_header_64": {
+        "name": "elf_program_header_64",
+        "description": "ELF64 program header",
+        "fields": [
+          {"name": "p_type", "offset": {"__type__": "InfoSize", "byte": 0, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int", "enum_def_name": "ProgramType", "byte_swap": true},
+          {"name": "p_flags", "offset": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int", "enum_def_name": "ProgramFlags", "byte_swap": true},
+          {"name": "p_offset", "offset": {"__type__": "InfoSize", "byte": 8, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 8, "bit": 0}, "type": "unsigned int", "byte_swap": true},
+          {"name": "p_vaddr", "offset": {"__type__": "InfoSize", "byte": 16, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 8, "bit": 0}, "type": "unsigned int", "byte_swap": true},
+          {"name": "p_paddr", "offset": {"__type__": "InfoSize", "byte": 24, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 8, "bit": 0}, "type": "unsigned int", "byte_swap": true},
+          {"name": "p_filesz", "offset": {"__type__": "InfoSize", "byte": 32, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 8, "bit": 0}, "type": "unsigned int", "byte_swap": true},
+          {"name": "p_memsz", "offset": {"__type__": "InfoSize", "byte": 40, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 8, "bit": 0}, "type": "unsigned int", "byte_swap": true},
+          {"name": "p_align", "offset": {"__type__": "InfoSize", "byte": 48, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 8, "bit": 0}, "type": "unsigned int", "byte_swap": true}
+        ]
+      },
+      "elf_section_header_32": {
+        "name": "elf_section_header_32",
+        "description": "ELF32 section header",
+        "fields": [
+          {"name": "sh_name", "offset": {"__type__": "InfoSize", "byte": 0, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int", "byte_swap": true},
+          {"name": "sh_type", "offset": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int", "enum_def_name": "SectionType", "byte_swap": true},
+          {"name": "sh_flags", "offset": {"__type__": "InfoSize", "byte": 8, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int", "enum_def_name": "SectionFlags", "byte_swap": true},
+          {"name": "sh_addr", "offset": {"__type__": "InfoSize", "byte": 12, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int", "byte_swap": true},
+          {"name": "sh_offset", "offset": {"__type__": "InfoSize", "byte": 16, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int", "byte_swap": true},
+          {"name": "sh_size", "offset": {"__type__": "InfoSize", "byte": 20, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int", "byte_swap": true},
+          {"name": "sh_link", "offset": {"__type__": "InfoSize", "byte": 24, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int", "byte_swap": true},
+          {"name": "sh_info", "offset": {"__type__": "InfoSize", "byte": 28, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int", "byte_swap": true},
+          {"name": "sh_addralign", "offset": {"__type__": "InfoSize", "byte": 32, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int", "byte_swap": true},
+          {"name": "sh_entsize", "offset": {"__type__": "InfoSize", "byte": 36, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int", "byte_swap": true}
+        ]
+      },
+      "elf_section_header_64": {
+        "name": "elf_section_header_64",
+        "description": "ELF64 section header",
+        "fields": [
+          {"name": "sh_name", "offset": {"__type__": "InfoSize", "byte": 0, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int", "byte_swap": true},
+          {"name": "sh_type", "offset": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int", "enum_def_name": "SectionType", "byte_swap": true},
+          {"name": "sh_flags", "offset": {"__type__": "InfoSize", "byte": 8, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 8, "bit": 0}, "type": "unsigned int", "enum_def_name": "SectionFlags", "byte_swap": true},
+          {"name": "sh_addr", "offset": {"__type__": "InfoSize", "byte": 16, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 8, "bit": 0}, "type": "unsigned int", "byte_swap": true},
+          {"name": "sh_offset", "offset": {"__type__": "InfoSize", "byte": 24, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 8, "bit": 0}, "type": "unsigned int", "byte_swap": true},
+          {"name": "sh_size", "offset": {"__type__": "InfoSize", "byte": 32, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 8, "bit": 0}, "type": "unsigned int", "byte_swap": true},
+          {"name": "sh_link", "offset": {"__type__": "InfoSize", "byte": 40, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int", "byte_swap": true},
+          {"name": "sh_info", "offset": {"__type__": "InfoSize", "byte": 44, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 4, "bit": 0}, "type": "unsigned int", "byte_swap": true},
+          {"name": "sh_addralign", "offset": {"__type__": "InfoSize", "byte": 48, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 8, "bit": 0}, "type": "unsigned int", "byte_swap": true},
+          {"name": "sh_entsize", "offset": {"__type__": "InfoSize", "byte": 56, "bit": 0}, "size": {"__type__": "InfoSize", "byte": 8, "bit": 0}, "type": "unsigned int", "byte_swap": true}
+        ]
+      }
+    },
+    "enum_dict": {
+      "Class": {"name": "Class", "description": "ELF class", "values": {"ELF32": 1, "ELF64": 2}},
+      "DataEncoding": {"name": "DataEncoding", "description": "ELF data encoding", "values": {"ELFDATA2LSB": 1, "ELFDATA2MSB": 2}},
+      "Type": {"name": "Type", "description": "ELF object type", "values": {"NONE": 0, "REL": 1, "EXEC": 2, "DYN": 3, "CORE": 4}},
+      "Machine": {"name": "Machine", "description": "ELF machine architecture", "values": {"NONE": 0, "X86": 3, "ARM": 40, "X86_64": 62, "AARCH64": 183, "RISCV": 243}},
+      "ProgramType": {"name": "ProgramType", "description": "ELF program segment type", "values": {"NULL": 0, "LOAD": 1, "DYNAMIC": 2, "INTERP": 3, "NOTE": 4, "SHLIB": 5, "PHDR": 6, "TLS": 7, "GNU_EH_FRAME": 1685382480, "GNU_STACK": 1685382481, "GNU_RELRO": 1685382482}},
+      "ProgramFlags": {"name": "ProgramFlags", "description": "ELF program segment flags", "values": {"X": 1, "W": 2, "R": 4}},
+      "SectionType": {"name": "SectionType", "description": "ELF section type", "values": {"NULL": 0, "PROGBITS": 1, "SYMTAB": 2, "STRTAB": 3, "RELA": 4, "HASH": 5, "DYNAMIC": 6, "NOTE": 7, "NOBITS": 8, "REL": 9, "SHLIB": 10, "DYNSYM": 11, "INIT_ARRAY": 14, "FINI_ARRAY": 15, "PREINIT_ARRAY": 16, "GROUP": 17, "SYMTAB_SHNDX": 18}},
+      "SectionFlags": {"name": "SectionFlags", "description": "ELF section flags", "values": {"WRITE": 1, "ALLOC": 2, "EXECINSTR": 4, "MERGE": 16, "STRINGS": 32, "INFO_LINK": 64, "LINK_ORDER": 128, "OS_NONCONFORMING": 256, "GROUP": 512, "TLS": 1024, "COMPRESSED": 2048, "MASKOS": 251658240, "MASKPROC": 4026531840}}
+    }
+  }
+}

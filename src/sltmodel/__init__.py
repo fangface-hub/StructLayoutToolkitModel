@@ -28,6 +28,9 @@ _EXPORTS = {
     "replace_instance_field_value": (".struct_instance",
                                      "replace_instance_field_value"),
     "replace_instance_value": (".struct_instance", "replace_instance_value"),
+    "LuaPluginError": (".lua_plugins", "LuaPluginError"),
+    "LuaPluginManager": (".lua_plugins", "LuaPluginManager"),
+    "NO_LUA_PLUGINS": (".lua_plugins", "NO_LUA_PLUGINS"),
 }
 
 __all__ = list(_EXPORTS)

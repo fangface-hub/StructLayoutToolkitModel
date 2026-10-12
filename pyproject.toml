@@ -1,6 +1,6 @@
 [project]
 name = "sltmodel"
-version = "1.0.4"
+version = "1.1.0"
 description = "GUI-independent data models and operations for StructLayoutToolkit"
 readme = "README.md"
 requires-python = ">=3.14"
@@ -8,6 +8,7 @@ dependencies = [
     "sltcalc>=1.1.1",
     "sltcodec>=2.7.3",
     "sltcore>=1.7.1",
+    "lupa>=2.8",
 ]
 
 license = "MIT"
@@ -32,6 +33,7 @@ packages = ["src/sltmodel"]
 [dependency-groups]
 dev = [
     "pytest>=9.1.1",
+    "pytest-cov>=7.0.0",
 ]
 
 [tool.pytest.ini_options]

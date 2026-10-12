@@ -1,11 +1,35 @@
 """Tests for capture packet extraction and fragment reassembly."""
 import struct
+from types import SimpleNamespace
 
 import pytest
 from sltcore import virtual_bytearray
 
-from sltmodel.packet_data import (CaptureDocument, _frames,
-                                  internet_checksum)
+from sltmodel.packet_data import (CaptureDocument, _RawFragment, _extract_ip_fragment,
+                                  _extract_ipv4, _extract_ipv6, _frames,
+                                  _pcap_frames, _pcapng_frames, _reassemble,
+                                  _timestamp_values, internet_checksum)
+
+
+def _field_instance(
+    name: str,
+    value: object,
+    *,
+    offset: int = 0,
+    size: int = 0,
+):
+    return SimpleNamespace(
+        field_def=SimpleNamespace(
+            name=name,
+            offset=SimpleNamespace(bytes=offset),
+            size=SimpleNamespace(bytes=size),
+        ),
+        value=value,
+    )
+
+
+def _instance(*fields):
+    return SimpleNamespace(field_instances=list(fields))
 
 
 def _ipv4_fragment(
@@ -33,10 +57,11 @@ def _ipv4_fragment(
     return ethernet + header + payload
 
 
-def _pcap(frames: list[bytes]) -> bytes:
+def _pcap(frames: list[bytes], link_type: int = 1) -> bytes:
     """Create a PCAP capture with the given frames."""
     result = bytearray.fromhex(
         "d4c3b2a1 0200 0400 00000000 00000000 ffff0000 01000000")
+    result[20:24] = struct.pack("<I", link_type)
     for sequence, frame in enumerate(frames):
         result += struct.pack("<IIII", sequence, 0, len(frame), len(frame))
         result += frame
@@ -331,3 +356,307 @@ def test_empty_capture_completes_progress_without_packets():
 
     assert document.packets == []
     assert updates[-1] == 1.0
+
+
+def test_timestamp_values_supports_display_values_and_raw_fields():
+    pcap_timestamp = _instance(
+        _field_instance("timestamp_seconds", 12),
+        _field_instance("timestamp_nanoseconds", 34),
+    )
+    displayed_timestamp = _instance()
+    displayed_timestamp.display_value = "formatted"
+    raw_timestamp = _instance(
+        _field_instance("high", 2),
+        _field_instance("low", 3),
+    )
+    text_timestamp = _instance(
+        _field_instance("high", "raw timestamp"),
+        _field_instance("low", 0),
+    )
+    text_seconds_timestamp = _instance(
+        _field_instance("timestamp_seconds", "raw seconds"),
+        _field_instance("timestamp_nanoseconds", 0),
+    )
+    displayed_pcap_timestamp = _instance()
+    displayed_pcap_timestamp.display_value = "displayed pcap time"
+
+    assert _timestamp_values((
+        _field_instance("pcap_timestamp", pcap_timestamp),
+        _field_instance("pcap_timestamp", displayed_pcap_timestamp),
+        _field_instance("timestamp", displayed_timestamp),
+        _field_instance("timestamp", raw_timestamp),
+        _field_instance("pcap_timestamp", text_seconds_timestamp),
+        _field_instance("timestamp", text_timestamp),
+        _field_instance("timestamp_resolution", 9),
+        _field_instance("ignored", 10),
+    )) == {
+        "timestamp": "raw timestamp",
+        "timestamp_resolution": 9,
+    }
+
+
+def test_pcap_frames_handles_missing_header_and_skips_non_packet_records():
+    assert _pcap_frames(_instance()) == []
+
+    header = _instance(_field_instance("link_type", 0x10001))
+    packet_data = _field_instance("packet_data", b"frame", offset=4, size=5)
+    packet_record = _field_instance(
+        "record[0]",
+        _instance(packet_data),
+        offset=16,
+    )
+    ignored_record = _field_instance(
+        "trailer",
+        _instance(_field_instance("packet_data", b"ignored")),
+    )
+    no_packet_record = _field_instance("record[1]", _instance())
+
+    assert _pcap_frames(_instance(
+        _field_instance("header", header),
+        ignored_record,
+        no_packet_record,
+        packet_record,
+    )) == [(20, 5, 1, {}, b"frame")]
+
+
+def test_pcapng_frames_handles_interface_blocks_packet_blocks_and_resets():
+    def block(*fields, offset=0):
+        return _field_instance(
+            "block",
+            _instance(*fields),
+            offset=offset,
+        )
+
+    interface_body = _instance(
+        _field_instance("link_type", 1),
+        _field_instance("snap_len", 10),
+    )
+    interface_block = block(
+        _field_instance("body", interface_body, offset=8),
+    )
+    packet_body = _instance(
+        _field_instance("interface_id", 0),
+        _field_instance("packet_data", b"enhanced", offset=4, size=8),
+    )
+    enhanced_block = block(
+        _field_instance("body", packet_body, offset=8),
+        offset=20,
+    )
+    invalid_interface_block = block(
+        _field_instance(
+            "body",
+            _instance(
+                _field_instance("interface_id", 3),
+                _field_instance("packet_data", b"ignored", size=7),
+            ),
+        ),
+    )
+    simple_packet_block = block(
+        _field_instance(
+            "body",
+            _instance(
+                _field_instance("original_packet_length", 12),
+                _field_instance(
+                    "packet_data_with_padding",
+                    b"simple!!!",
+                    offset=4,
+                    size=9,
+                ),
+            ),
+            offset=8,
+        ),
+        offset=40,
+    )
+    irrelevant_block = block(_field_instance("body", _instance()))
+    reset_block = block(
+        _field_instance("byte_order_magic", b"\x4d\x3c\x2b\x1a"),
+        _field_instance(
+            "body",
+            _instance(
+                _field_instance("original_packet_length", 3),
+                _field_instance("packet_data_with_padding", b"abc", size=3),
+            ),
+        ),
+    )
+    no_body_block = block(_field_instance("not_body", None))
+
+    frames = _pcapng_frames(_instance(
+        no_body_block,
+        simple_packet_block,
+        interface_block,
+        invalid_interface_block,
+        enhanced_block,
+        irrelevant_block,
+        simple_packet_block,
+        reset_block,
+        simple_packet_block,
+    ))
+
+    assert frames == [
+        (32, 8, 1, {}, b"enhanced"),
+        (52, 9, 1, {}, b"simple!!!"),
+    ]
+
+
+def test_extract_ip_fragment_ignores_unsupported_links_and_network_packets():
+    packet_data = _instance()
+    assert _extract_ip_fragment(
+        bytearray(100), 0, 100, 0, 0, {}, packet_data) is None
+    assert _extract_ip_fragment(
+        bytearray(100), 0, 100, 1, 0, {}, packet_data) is None
+
+    unsupported_packet = _instance(_field_instance("other_header", 1))
+    ethernet_data = _instance(
+        _field_instance("network_packet", unsupported_packet, offset=14),
+    )
+    assert _extract_ip_fragment(
+        bytearray(100), 0, 100, 1, 0, {}, ethernet_data) is None
+
+    missing_transport_ipv4 = _instance(
+        _field_instance("version_ihl", 0x45),
+    )
+    ethernet_ipv4 = _instance(
+        _field_instance(
+            "network_packet",
+            missing_transport_ipv4,
+            offset=14,
+        ),
+    )
+    assert _extract_ip_fragment(
+        bytearray(100), 0, 100, 1, 0, {}, ethernet_ipv4) is None
+    assert _extract_ipv4(bytearray(100), 14, 0, {}, missing_transport_ipv4) \
+        is None
+
+    missing_transport_ipv6 = _instance(
+        _field_instance("version_traffic_flow", 6 << 28),
+    )
+    assert _extract_ipv6(bytearray(100), 14, 0, {}, missing_transport_ipv6) \
+        is None
+
+
+def test_extract_ip_fragment_rejects_unrecognized_network_header(monkeypatch):
+    monkeypatch.setattr(
+        "sltmodel.packet_data._network_packet",
+        lambda _packet_data: (SimpleNamespace(field_instances=[]), 14),
+    )
+
+    assert _extract_ip_fragment(
+        bytearray(100),
+        0,
+        100,
+        1,
+        0,
+        {},
+        _instance(),
+    ) is None
+
+
+def test_extract_unfragmented_ipv6_packet_without_fragment_header():
+    capture = bytearray(100)
+    capture[54:62] = b"payload!"
+    packet = _instance(
+        _field_instance("version_traffic_flow", 6 << 28),
+        _field_instance("next_header", 17),
+        _field_instance("source_address", bytes(16)),
+        _field_instance("destination_address", bytes(16)),
+        _field_instance(
+            "transport_segment",
+            b"payload!",
+            offset=40,
+            size=8,
+        ),
+    )
+
+    fragment = _extract_ipv6(
+        capture,
+        14,
+        5,
+        {},
+        packet,
+    )
+
+    assert fragment is not None
+    assert fragment.key == (6, 5)
+    assert fragment.identification is None
+    assert fragment.offset == 0
+    assert not fragment.more_fragments
+    assert fragment.data.to_bytes() == b"payload!"
+
+
+def test_ipv6_fragment_header_without_payload_is_ignored():
+    fragment_header = _instance()
+    packet = _instance(
+        _field_instance("next_header", 44),
+        _field_instance(
+            "transport_segment",
+            fragment_header,
+            offset=40,
+        ),
+    )
+
+    assert _extract_ipv6(bytearray(100), 14, 0, {}, packet) is None
+
+
+def test_capture_with_non_ethernet_link_type_has_no_ip_packets():
+    document = CaptureDocument.from_bytes(
+        _pcap([_ipv4_fragment(b"01234567", 0, False)], link_type=101),
+    )
+
+    assert document.packets == []
+
+
+def test_reassemble_preserves_first_data_for_overlaps_and_zero_fills_gaps():
+    key = (4, b"source", b"destination", 17, 9)
+
+    def fragment(sequence, offset, data, more):
+        return _RawFragment(
+            sequence,
+            {},
+            key,
+            4,
+            b"source",
+            b"destination",
+            17,
+            9,
+            offset,
+            more,
+            sequence,
+            virtual_bytearray((data,)),
+        )
+
+    progress = []
+    overlap = _reassemble([
+        fragment(1, 0, b"abcdefgh", True),
+        fragment(0, 4, b"XXXXXXXX", False),
+    ], progress.append)[0]
+    duplicate_overlap = _reassemble([
+        fragment(3, 0, b"abcdefgh", True),
+        fragment(4, 0, b"XXXXXXXX", False),
+    ])[0]
+    gap = _reassemble([
+        fragment(2, 8, b"tail", False),
+    ])[0]
+
+    assert overlap.complete
+    assert overlap.data.to_bytes() == b"abcdefghXXXX"
+    assert [part.sequence for part in overlap.fragments] == [1, 0]
+    assert progress == [1.0]
+    assert duplicate_overlap.complete
+    assert duplicate_overlap.data.to_bytes() == b"abcdefgh"
+    assert not gap.complete
+    assert gap.data.to_bytes() == bytes(8) + b"tail"
+    assert gap.fragments[0].length == 4
+
+
+def test_internet_checksum_handles_empty_input_and_replace_short_data():
+    assert internet_checksum(b"") == 0xFFFF
+
+    payload = b"short"
+    document = CaptureDocument.from_bytes(
+        _pcap([_ipv4_fragment(payload, 0, False)]),
+    )
+    packet = document.packets[0]
+    packet.replace_data(document.data, packet.data)
+    packet.replace_data(document.data, payload)
+
+    assert packet.data.to_bytes() == payload
